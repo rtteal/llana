@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import chainlit as cl
 import openai
-from prompts import SYSTEM_PROMPT, USER_PROMPT
+from prompts import SYSTEM_PROMPT
 from langsmith import traceable
 from langsmith.wrappers import wrap_openai
 
@@ -36,7 +36,7 @@ client = wrap_openai(
     openai.AsyncClient(api_key=CONFIG["api_key"], base_url=CONFIG["endpoint_url"])
 )
 
-GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.3, "max_tokens": 500}
+GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.7, "max_tokens": 500}
 
 
 # Import contents of text files
@@ -53,7 +53,11 @@ TEXT_3 = load_text_file("porsche_summary.txt")
 def initialize_bot():
     message_history = cl.user_session.get("message_history", [])
     if not message_history:
-        message_history.insert(0, {"role": "system", "content": SYSTEM_PROMPT})
+        message_history.insert(0, {"role": "system", "content": SYSTEM_PROMPT.format(
+                article_1_summary=TEXT_1,
+                article_2_summary=TEXT_2,
+                article_3_summary=TEXT_3,
+            )})
         cl.user_session.set("message_history", message_history)
 
 
@@ -87,11 +91,7 @@ async def on_message(message: cl.Message):
     await get_gpt_response_stream(
         {
             "role": "user",
-            "content": USER_PROMPT.format(
-                article_1_summary=TEXT_1,
-                article_2_summary=TEXT_2,
-                article_3_summary=TEXT_3,
-            ),
+            "content": message.content,
         }
     )
 
