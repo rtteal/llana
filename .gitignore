@@ -166,3 +166,6 @@ cython_debug/
 # Chainlit cache 
 .chainlit
 .files
+
+# playwright screenshots
+screenshots/*/*.png
