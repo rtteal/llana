@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import chainlit as cl
 import openai
-from prompts import PODCAST_NARRATORS, SYSTEM_PROMPT
+from utils.prompts import PODCAST_NARRATORS, SYSTEM_PROMPT
 from langsmith import traceable
 from langsmith.wrappers import wrap_openai
 import json
