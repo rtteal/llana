@@ -20,6 +20,7 @@ def get_hacker_news_articles(url: str, page_size: int = 0) -> list[Article]:
 
     articles: list[Article] = []
     for item in soup.find_all('tr', {'class': 'athing'}):
+        id = item.get('id')
         if page_size > 0 and len(articles) >= page_size:
             break
         sibling = item.next_sibling.find_all('td', {'class': 'subtext'})
@@ -36,7 +37,7 @@ def get_hacker_news_articles(url: str, page_size: int = 0) -> list[Article]:
                 score = None
         titleline = item.find_all('span', {'class': 'titleline'})
         for title in titleline:
-            articles.append(Article(title.find('a').text, title.find('a')['href'], author, score))
+            articles.append(Article(title.find('a').text, title.find('a')['href'], author, score, id))
     return articles
 
 def get_article_content(article: Article):
@@ -46,7 +47,7 @@ def get_article_content(article: Article):
     return article
 
 def get_article_screenshot(day: str, article: Article):
-    take_screenshot(article.url, f"screenshots/{day}/{article.title}.png")
+    take_screenshot(article.url, f"screenshots/{day}/{article.id}.png")
 
 def get_article_type(article: Article):
     if article.url.endswith('/'):
