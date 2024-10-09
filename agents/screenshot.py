@@ -1,70 +1,41 @@
-import openai
-from dotenv import load_dotenv
-import os
-from langsmith.wrappers import wrap_openai
-import base64
 import asyncio
-# Load environment variables
-load_dotenv()
 
-CONFIGURATIONS = {
-    "mistral_7B_instruct": {
-        "endpoint_url": os.getenv("MISTRAL_7B_INSTRUCT_ENDPOINT"),
-        "api_key": os.getenv("RUNPOD_API_KEY"),
-        "model": "mistralai/Mistral-7B-Instruct-v0.2",
-    },
-    "mistral_7B": {
-        "endpoint_url": os.getenv("MISTRAL_7B_ENDPOINT"),
-        "api_key": os.getenv("RUNPOD_API_KEY"),
-        "model": "mistralai/Mistral-7B-v0.1",
-    },
-    "openai_gpt-4": {
-        "endpoint_url": os.getenv("OPENAI_ENDPOINT"),
-        "api_key": os.getenv("OPENAI_API_KEY"),
-        "model": "gpt-4o-mini",
-    },
-}
-# Choose configuration
-CONFIG_KEY = "openai_gpt-4"
-CONFIG = CONFIGURATIONS[CONFIG_KEY]
+from datetime import datetime
+from llm import read_image
+from base import BaseAgent
 
-# Initialize the OpenAI async client
-client = wrap_openai(
-    openai.AsyncClient(api_key=CONFIG["api_key"], base_url=CONFIG["endpoint_url"])
-)
-
-GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.7, "max_tokens": 500}
 SYSTEM_PROMPT = """\
-You are a helpful assistant that can read screenshots and provide summaries.
+You are a helpful assistant that students access to understand the content inside a screenshot. 
+Your main task is to summarize the content inside the screenshot, and provide a detailed explanation
+of the content. The intended audience is a computer science student so the explanation should be tailored
+to this audience.
 """
-class ScreenshotAgent:
+
+
+class ScreenshotAgent(BaseAgent):
     def __init__(self, system_prompt):
-        self.message_history = [{"role": "system", "content": system_prompt}]
+        super().__init__(system_prompt)
+
+    @classmethod
+    def add_arguments(cls, parser):
+        super().add_arguments(parser)
+        parser.add_argument('--screenshot-folder', type=str, help='Path to the screenshot folder')
+        parser.add_argument('--date', type=str, help='Date for the screenshot folder')
+        parser.add_argument('--filename', type=str, help='Filename of the screenshot')
 
     async def read_screenshot(self, path):
-        with open(path, "rb") as f:
-            base64_image = base64.b64encode(f.read()).decode("utf-8")
-            self.message_history.append(
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
-                        },
-                    ],
-                }
-            )
-        response = await client.chat.completions.create(
-            messages=self.message_history,
-            **GEN_KWARGS
-        )
-        return response.choices[0].message.content
+        return await read_image(self.get_message_history(), path)
 
-async def main():
-    agent = ScreenshotAgent(SYSTEM_PROMPT)
-    r =  await agent.read_screenshot("screenshots/Show HN: Winamp and other media players, rebuilt for the web with Web Components.png")
-    print(r)
+    def run(self):
+        date = self.args.date or datetime.now().strftime("%Y-%m-%d")
+        filename = self.args.filename or "screenshot"    
+        root_folder = self.args.screenshot_folder or "screenshots"
+        path = f"{root_folder}/{date}/{filename}.png"
+        
+        return asyncio.run(self.read_screenshot(path))
+
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    agent = ScreenshotAgent(SYSTEM_PROMPT)
+    result = agent.run()
+    print(result)

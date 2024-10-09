@@ -1,5 +1,6 @@
 class Article:
-    def __init__(self, title, url, score, author, content=None):
+    def __init__(self, title, url, score, author, id, content=None):
+        self.id = id
         self.title = title
         self.url = url
         self.content = content
@@ -11,7 +12,7 @@ class Article:
         self.file_extension = None
 
     def __str__(self):
-        return f"{self.title} - {self.url} - {self.score} - {self.author}"
+        return f"{self.title} - {self.url} - {self.score} - {self.author} - {self.id}"
 
     def __repr__(self):
         return f"Article(title={self.title}, url={self.url}, score={self.score}, author={self.author}, content={self.content})"
