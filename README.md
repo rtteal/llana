@@ -27,3 +27,16 @@ This project aims to create an automated podcast generator based on the top post
 - Implement TTS functionality
 - Develop voice modulation capabilities
 - Expand source options beyond Hacker News
+
+# Running the project
+
+1. Install dependencies
+```bash
+pip install -r requirements.txt
+playwright install # playwright installs the headless browser to take screenshots
+```
+
+2. To obtain the screenshots, run the `article_scraper.py` script with the desired number of articles and day offset (0 for today, 1 for yesterday, etc.)
+```bash
+python article_scraper.py
+```
