@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
-from langsmith import traceable
-from langsmith.wrappers import wrap_openai
+from dotenv import load_dotenv
+from langfuse.decorators import observe
+from langfuse.openai import AsyncOpenAI
+
 
 import base64
 import openai
@@ -31,13 +33,12 @@ CONFIG_KEY = "openai_gpt-4"
 CONFIG = CONFIGURATIONS[CONFIG_KEY]
 
 # Initialize the OpenAI async client
-client = wrap_openai(
-    openai.AsyncClient(api_key=CONFIG["api_key"], base_url=CONFIG["endpoint_url"])
-)
+client = AsyncOpenAI()
 
 GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.7, "max_tokens": 500}
 
-@traceable
+
+@observe
 async def read_image(message_history, path, image_type="png"):
     with open(path, "rb") as f:
         base64_image = base64.b64encode(f.read()).decode("utf-8")
@@ -47,7 +48,9 @@ async def read_image(message_history, path, image_type="png"):
                 "content": [
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/{image_type};base64,{base64_image}"},
+                        "image_url": {
+                            "url": f"data:image/{image_type};base64,{base64_image}"
+                        },
                     },
                 ],
             }
