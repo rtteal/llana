@@ -169,3 +169,5 @@ cython_debug/
 
 # playwright screenshots
 screenshots/*/*.png
+
+.DS_Store

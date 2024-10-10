@@ -35,7 +35,7 @@ CONFIG = CONFIGURATIONS[CONFIG_KEY]
 # Initialize the OpenAI async client
 client = AsyncOpenAI()
 
-GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.7, "max_tokens": 500}
+GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.1, "max_tokens": 2500}
 
 
 @observe
