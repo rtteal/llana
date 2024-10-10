@@ -30,32 +30,36 @@ CONFIGURATIONS = {
 
 # Choose configuration
 CONFIG_KEY = "openai_gpt-4"
-CONFIG = CONFIGURATIONS[CONFIG_KEY]
 
-# Initialize the OpenAI async client
-client = AsyncOpenAI()
+class LLM:
+    def __init__(self, config_key=CONFIG_KEY, temperature=0.1, max_tokens=500):
+        self.config_key = config_key
+        self.config = CONFIGURATIONS[self.config_key]
+        self.client = AsyncOpenAI()
+        self.gen_kwargs = {
+            "model": self.config["model"],
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
 
-GEN_KWARGS = {"model": CONFIG["model"], "temperature": 0.1, "max_tokens": 2500}
-
-
-@observe
-async def read_image(message_history, path, image_type="png"):
-    with open(path, "rb") as f:
-        base64_image = base64.b64encode(f.read()).decode("utf-8")
-        message_history.append(
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/{image_type};base64,{base64_image}"
+    @observe
+    async def read_image(self, message_history, path, image_type="png"):
+        with open(path, "rb") as f:
+            base64_image = base64.b64encode(f.read()).decode("utf-8")
+            message_history.append(
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/{image_type};base64,{base64_image}"
+                            },
                         },
-                    },
-                ],
-            }
+                    ],
+                }
+            )
+        response = await self.client.chat.completions.create(
+            messages=message_history, **self.gen_kwargs
         )
-    response = await client.chat.completions.create(
-        messages=message_history, **GEN_KWARGS
-    )
-    return response.choices[0].message.content
+        return response.choices[0].message.content
