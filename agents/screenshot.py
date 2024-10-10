@@ -12,7 +12,7 @@ sys.path.append(parent_dir)
 
 
 from base import BaseAgent
-from utils.llm import read_image
+from utils.llm import LLM
 from utils.prompts import SCREENSHOT_PROMPT
 from database.main import DatabaseManager
 from database.models.article import Article
@@ -21,6 +21,7 @@ from database.models.article import Article
 class ScreenshotAgent(BaseAgent):
     def __init__(self, system_prompt):
         super().__init__(system_prompt)
+        self.llm = LLM(temperature=0.1, max_tokens=6500)
         self.db_manager = DatabaseManager()
 
     @classmethod
@@ -33,11 +34,10 @@ class ScreenshotAgent(BaseAgent):
         parser.add_argument("--filename", type=str, help="Filename of the screenshot")
 
     async def read_screenshot(self, path):
-        return await read_image(self.get_message_history(), path)
+        return await self.llm.read_image(self.get_message_history(), path)
 
     def run(self, article_id=None):
         articles = self.db_manager.get_articles_by_field("id", article_id)
-        print(articles)
         with self.db_manager.get_session() as session:
             for article in articles:
                 if article.content is None:
