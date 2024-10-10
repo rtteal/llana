@@ -157,22 +157,4 @@ Example#3
         }
     ]
 }
-
-Example#4
-{
-    "transcript": "The boring tunnel manager\n\nA simple & reliable command line SSH tunnel manager.\n\nFeatures\n- Ultra lightweight and fast\n- Local and remote tunnels\n- Compatible with SSH config and ssh-agent\n- Supports Unix sockets\n- Automatic reconnection\n- Human-friendly configuration via TOML\n\nUsage\nUsage:\nboring list,\nboring open,0 <name> [<name2>...] Open specified tunnel(s)\nboring close <name1> [<name2>...] Close specified tunnel(s)\n\nConfiguration\nBy default, boring reads its configuration from ~/.boring.toml. The configuration is a simple TOML file describing your tunnels:\n\n# simple tunnel\n[[tunnels]]\nname = \"dev\"\nlocal = \"9000\"\nremote = \"localhost:9000\"\nhost = \"dev-server\"\n\n# example of an explicit host (no SSH config)\n[[tunnels]]\nname = \"prod\"\nlocal = \"5001\"\nremote = \"localhost:5001\"\nhost = \"prod.example.com\"\nuser = \"prod\"\nidentity = \"~/.ssh/id_prod\" # will try default ones if not set\n\n# ... more tunnels\n\nCurrently, supported options are: name, local, remote, host, user, identity, port, and mode. host either describes a host which to match SSH configs to, or if no matches found, the actual hostname. mode can be 'local' for local or 'remote' for remote forwarding, default is 'local'. The location of the config file can be changed by setting the BORING_CONFIG environment variable.\n\nInstallation\nGet one of the pre-built binaries from the releases page or build it yourself:\ngit clone https://github.com/alebeck/boring && cd boring\n./build.sh\n\nCurrently only supports macOS and Linux.",
-    "main": {
-        "title": "The boring tunnel manager",
-        "summary": "The 'boring' SSH tunnel manager is a lightweight command-line tool designed for managing SSH tunnels efficiently. It supports both local and remote tunnels, is compatible with SSH configurations, and utilizes TOML for easy configuration. The tool aims to simplify the process of managing SSH connections with features like automatic reconnection and support for Unix sockets.",
-        "explanation": "This tool is particularly useful for developers and system administrators who frequently work with SSH tunnels. Its lightweight nature ensures minimal overhead, while the use of TOML for configuration makes it user-friendly. The ability to manage multiple tunnels and automatic reconnection enhances productivity, especially in environments where maintaining persistent connections is crucial."
-    },
-    "supporting": [
-        {
-            "title": "Features and Configuration",
-            "summary": "The 'boring' tunnel manager offers various features including ultra-lightweight performance, support for local and remote tunnels, and compatibility with SSH configurations. The configuration is handled through a simple TOML file, allowing users to easily define their tunnels and settings.",
-            "transcript": "Features\n- Ultra lightweight and fast\n- Local and remote tunnels\n- Compatible with SSH config and ssh-agent\n- Supports Unix sockets\n- Automatic reconnection\n- Human-friendly configuration via TOML\n\nConfiguration\nBy default, boring reads its configuration from ~/.boring.toml. The configuration is a simple TOML file describing your tunnels:\n\n# simple tunnel\n[[tunnels]]\nname = \"dev\"\nlocal = \"9000\"\nremote = \"localhost:9000\"\nhost = \"dev-server\"\n\n# example of an explicit host (no SSH config)\n[[tunnels]]\nname = \"prod\"\nlocal = \"5001\"\nremote = \"localhost:5001\"\nhost = \"prod.example.com\"\nuser = \"prod\"\nidentity = \"~/.ssh/id_prod\" # will try default ones if not set\n\n# ... more tunnels",
-            "explanation": "The features highlight the tool's efficiency and ease of use, making it suitable for users who need to manage multiple SSH tunnels seamlessly. The configuration section provides a clear example of how to set up tunnels using TOML, which is a straightforward format that enhances user experience. This approach allows users to quickly adapt the tool to their specific needs."
-        }
-  ]
-}
 """
