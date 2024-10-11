@@ -31,6 +31,7 @@ CONFIGURATIONS = {
 # Choose configuration
 CONFIG_KEY = "openai_gpt-4"
 
+
 class LLM:
     def __init__(self, config_key=CONFIG_KEY, temperature=0.1, max_tokens=500):
         self.config_key = config_key
@@ -41,8 +42,7 @@ class LLM:
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
-
-    @observe
+    
     async def read_image(self, message_history, path, image_type="png"):
         with open(path, "rb") as f:
             base64_image = base64.b64encode(f.read()).decode("utf-8")
@@ -63,3 +63,19 @@ class LLM:
             messages=message_history, **self.gen_kwargs
         )
         return response.choices[0].message.content
+
+    async def get_llm_response_stream(self, message_history):
+        try:
+            gpt_response = ""
+            stream = await self.client.chat.completions.create(
+                messages=message_history, stream=True, **self.gen_kwargs
+            )
+            # Get GPT response via streaming
+            async for part in stream:
+                if token := part.choices[0].delta.content or "":
+                    # await response.stream_token(token)
+                    gpt_response += token
+            return gpt_response
+        except Exception as e:
+            print(f"Error in get_gpt_response_stream: {str(e)}")
+            return f"An error occurred: {str(e)}"

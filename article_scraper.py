@@ -17,7 +17,7 @@ def take_screenshot(url, output_path):
         browser = p.chromium.launch()
         page = browser.new_page()
         page.goto(url)
-        page.screenshot(path=output_path, full_page=True)
+        page.screenshot(path=output_path, full_page=True, animations="disabled")
         browser.close()
     logger.info(f"Screenshot saved to {output_path}")
 
@@ -97,28 +97,34 @@ def get_article_type(article: Article):
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Scrape articles from Hacker News for a specific day.")
-    parser.add_argument('--day', type=str, help='The day to scrape articles for (YYYY-MM-DD format). If not provided, defaults to today.')
+    parser = argparse.ArgumentParser(
+        description="Scrape articles from Hacker News for a specific day."
+    )
+    parser.add_argument(
+        "--day",
+        type=str,
+        help="The day to scrape articles for (YYYY-MM-DD format). If not provided, defaults to today.",
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     logger.info("Starting article scraper")
     args = parse_arguments()
-    
+
     db_manager = DatabaseManager()
     db_manager.create_tables()
-    
+
     if args.day:
         day = args.day
         date = datetime.strptime(day, "%Y-%m-%d")
     else:
         date = datetime.now()
         day = date.strftime("%Y-%m-%d")
-    
+
     url = f"https://news.ycombinator.com/front?day={day}"
     logger.info(f"Scraping articles for date: {day}")
-    
+
     articles = get_hacker_news_articles(url, 10)
     with db_manager.get_session() as session:
         for article in articles:
