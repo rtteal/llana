@@ -40,7 +40,7 @@ class ScreenshotAgent(BaseAgent):
 
     @observe
     def run(self, article_id=None):
-        langfuse_context.update_current_trace(tags=["screenshot_agent", "run"])
+        langfuse_context.update_current_trace(tags=["screenshot_agent_run"])
         self.logger.info(f"Starting ScreenshotAgent run for article_id: {article_id}")
         articles = self.db_manager.get_articles_by_field("id", article_id)
         self.logger.info(f"Found {len(articles)} articles to process")
@@ -60,6 +60,7 @@ class ScreenshotAgent(BaseAgent):
                             self.read_screenshot(article.screenshot_path)
                         )
                         article.content = content
+                        session.merge(article)
                         self.logger.info(
                             f"Successfully processed content for article: {article.title}"
                         )
@@ -81,7 +82,7 @@ class ScreenshotAgent(BaseAgent):
     @observe
     def evaluate(self):
         self.logger.info("Starting ScreenshotAgent evaluate")
-        langfuse_context.update_current_trace(tags=["screenshot_agent", "evaluate"])
+        langfuse_context.update_current_trace(tags=["screenshot_agent_evaluate"])
         now = datetime.now()
         # Get traces from 5am yesterday to now()
         five_am_today = datetime(now.year, now.month, now.day, 5, 0)
