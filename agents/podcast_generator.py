@@ -77,7 +77,7 @@ class PodcastGeneratorAgent(BaseAgent):
             except Exception as e:
                 self.logger.error(f"Error committing changes to the database: {str(e)}")
 
-        self.logger.info("ScreenshotAgent run completed")
+        self.logger.info("PodcastGeneratorAgent run completed")
 
     @observe
     def evaluate(self):
