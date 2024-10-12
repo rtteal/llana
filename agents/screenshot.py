@@ -60,6 +60,7 @@ class ScreenshotAgent(BaseAgent):
                             self.read_screenshot(article.screenshot_path)
                         )
                         article.content = content
+                        session.merge(article)
                         self.logger.info(
                             f"Successfully processed content for article: {article.title}"
                         )

@@ -249,3 +249,10 @@ Input:
 Reason: The output is following the defined schema, but it is truncated. It doesn't not contain a valid JSON object.
 Output: False
 """
+
+PODCAST_GENERATOR_PROMPT = """\
+You are an AI assistant that generates a podcast from a given summary in the style of Lex Friedman.
+
+Here is the summary:
+{summary}
+"""
