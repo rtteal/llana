@@ -7,6 +7,7 @@ class Article(BaseModel):
     title = Column(String(255), nullable=False)
     url = Column(String(255), nullable=False)
     content = Column(Text)
+    podcast = Column(Text)
     score = Column(Integer)
     author = Column(String(100))
     is_webpage = Column(Boolean, default=True)
@@ -15,6 +16,7 @@ class Article(BaseModel):
     file_extension = Column(String(10))
     hn_id = Column(String(20), unique=True)
     day = Column(String(10))
+    id = Column(Integer, primary_key=True, autoincrement=True)
 
     def __init__(self, title, url, author, score, **kwargs):
         super().__init__(**kwargs)
