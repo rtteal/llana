@@ -115,12 +115,12 @@ if __name__ == "__main__":
     logger = get_logger("screenshot_agent")
     # Parse command-line arguments
     parser = ArgumentParser(description="Screenshot Agent")
-    parser.add_argument("--date", help="Date to process (YYYY-MM-DD)")
+    parser.add_argument("--day", help="Date to process (YYYY-MM-DD)")
     parser.add_argument("--evaluate", action="store_true", help="Run evaluation mode")
     args = parser.parse_args()
 
     # Get the day from --date argument or use current date
-    day = args.date if args.date else datetime.now().strftime("%Y-%m-%d")
+    day = args.day if args.day else datetime.now().strftime("%Y-%m-%d")
     evaluate = args.evaluate
 
     if evaluate:
@@ -132,6 +132,6 @@ if __name__ == "__main__":
         db_manager = DatabaseManager()
         articles = db_manager.get_articles_by_field("day", day)
         logger.info(f"Found {len(articles)} articles to process")
-        for article in articles:
+        for article in articles[0:4]:
             agent = ScreenshotAgent(SCREENSHOT_PROMPT)
             agent.run(article_id=article.id)

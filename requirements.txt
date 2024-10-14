@@ -5,9 +5,12 @@ aiosignal==1.3.1
 annotated-types==0.7.0
 anyio==4.4.0
 asyncer==0.0.7
+asyncio==3.4.3
 attrs==24.2.0
+backoff==2.2.1
 beautifulsoup4==4.12.3
 bidict==0.23.1
+blinker==1.8.2
 bs4==0.0.2
 certifi==2024.8.30
 chainlit==1.2.0
@@ -20,6 +23,8 @@ dirtyjson==1.0.8
 distro==1.9.0
 fastapi==0.112.4
 filetype==1.2.0
+Flask==3.0.3
+Flask-Cors==5.0.0
 frozenlist==1.4.1
 fsspec==2024.9.0
 googleapis-common-protos==1.65.0
@@ -30,12 +35,15 @@ httpcore==1.0.5
 httpx==0.27.2
 idna==3.10
 importlib_metadata==8.4.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
 jiter==0.5.0
 joblib==1.4.2
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain-core==0.3.1
 langchain-openai==0.2.0
+langfuse==2.51.5
 langsmith==0.1.122
 Lazify==0.4.0
 literalai==0.0.607
@@ -54,6 +62,7 @@ llama-index-question-gen-openai==0.2.0
 llama-index-readers-file==0.2.1
 llama-index-readers-llama-parse==0.3.0
 llama-parse==0.5.5
+MarkupSafe==3.0.1
 marshmallow==3.22.0
 multidict==6.1.0
 mypy-extensions==1.0.0
@@ -114,6 +123,7 @@ uptrace==1.26.0
 urllib3==2.2.3
 uvicorn==0.25.0
 watchfiles==0.20.0
+Werkzeug==3.0.4
 wrapt==1.16.0
 wsproto==1.2.0
 yarl==1.11.1

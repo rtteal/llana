@@ -97,6 +97,10 @@ if __name__ == "__main__":
     articles = db_manager.get_articles_by_field("id", article_id)
     logger.info(f"Found {len(articles)} articles to process")
     for article in articles:
-        agent = PodcastGeneratorAgent(PODCAST_GENERATOR_PROMPT)
+        transcript = json.loads(article.content)["transcript"]
+        summary = json.loads(article.content)["main"]["summary"]
+        explanation = json.loads(article.content)["main"]["explanation"]
+        agent = PodcastGeneratorAgent(PODCAST_GENERATOR_PROMPT.format(
+            transcript=transcript, summary=summary, explanation=explanation))
         agent.run(article_id=article.id)
 

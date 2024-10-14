@@ -1,0 +1,117 @@
+<div id="content">
+  <!--button id="menu-toggle">Toggle Menu</button-->
+  <div class="header">
+    <h1>Llana Demo</h1>
+  </div>
+  <div class="content-wrapper">
+    <div class="column">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Step 1: Scrape the data to be used
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input
+            type="text"
+            id="day"
+            name="day"
+            placeholder="YYYY-MM-DD"
+            #day
+          />
+          <button mat-button (click)="triggerJob($event)">Scrape</button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Step 2: Collected data
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input
+            type="text"
+            id="data1-day"
+            name="data1-day"
+            placeholder="YYYY-MM-DD"
+            #data1Day
+          />
+          <button mat-button (click)="showData($event)">Show data for the day</button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Step 3: Agent to augmentate the data
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input
+            type="text"
+            id="run-augmentation-day"
+            name="run-augmentation-day"
+            placeholder="YYYY-MM-DD"
+            #data2Day
+          />
+          <button
+            id="run-augmentation-btn"
+            (click)="runAugmentation($event)"
+          >
+            Run
+          </button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Step 4: Augmentated data
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input
+            type="text"
+            id="article-id"
+            name="article-id"
+            placeholder="Article ID"
+            #articleId
+          />
+          <button id="show-data2-btn" (click)="showData2($event)">Show</button>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Step 5: Create the Podcast script
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input
+            type="text"
+            id="podcast-article-id"
+            name="podcast-article-id"
+            placeholder="Article ID"
+            #podcastArticleId
+          />
+          <button id="create-podcast-btn" (click)="createPodcast($event)">Create</button>
+       </mat-expansion-panel>
+
+       <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Step 6: Review the Podcast script
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <input
+          type="text"
+          id="review-podcast-article-id"
+          name="review-podcast-article-id"
+          placeholder="Article ID"
+          #reviewPodcastArticleId
+        />
+        <button id="review-podcast-btn" (click)="reviewPodcast($event)">Review</button>
+     </mat-expansion-panel>
+
+      </mat-accordion>
+    </div>
+    <div class="column">
+      <div id="ajax-content">
+        <!-- Content will be loaded here via AJAX -->
+      </div>
+    </div>
+  </div>
+</div>
