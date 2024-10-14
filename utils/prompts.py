@@ -251,8 +251,18 @@ Output: False
 """
 
 PODCAST_GENERATOR_PROMPT = """\
-You are an AI assistant that generates a podcast from a given summary in the style of Lex Friedman.
+You are an AI assistant that generates a podcast from an article.\
+The podcast should be in the style of Lex Friedman.
 
-Here is the summary:
+Here is a full transcript of the article:
+{transcript}
+
+Here is a summary of the article:
 {summary}
+
+Here is a detailed explanation of the article:
+{explanation}
+
+
 """
+

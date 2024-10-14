@@ -125,7 +125,7 @@ if __name__ == "__main__":
     url = f"https://news.ycombinator.com/front?day={day}"
     logger.info(f"Scraping articles for date: {day}")
 
-    articles = get_hacker_news_articles(url, 10)
+    articles = get_hacker_news_articles(url, 3)
     with db_manager.get_session() as session:
         for article in articles:
             logger.info(f"Processing article: {article.title}")
